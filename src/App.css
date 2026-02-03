@@ -1,38 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+  background-color: #031734;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.project-card {
+  background-color: #1e1e1e;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 10px 20px rgba(6, 80, 111, 0.932);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 30px rgba(17, 163, 226, 0.932);
+}
+
+.project-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.project-card h3 {
+  margin-top: 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.project-card p {
+  font-size: 1rem;
+  color: #bbbbbb;
+  line-height: 1.6;
+}
+
+#button-view{
+  text-align: center;
+}
+
+.project-card a {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-image: linear-gradient(45deg, #007bff, #00d2ff);
   color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: transform 0.2s;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.project-card a:hover {
+  transform: scale(1.05);
 }

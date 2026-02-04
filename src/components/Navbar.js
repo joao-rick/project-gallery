@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import {
+  FaBars,
+  FaEnvelope,
+  FaProjectDiagram,
+  FaTimes,
+  FaUser,
+} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -9,30 +16,34 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <a href="/" className="navbar-logo">
-          Meus Projetos
-        </a>
+        <Link to="/" className="navbar-logo" onClick={closeMenu}>
+          Portfólio
+        </Link>
         <div className="menu-icon" onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </div>
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
-            <a href="/" className="nav-links">
-              Início
-            </a>
+            <Link to="/" className="nav-links" onClick={closeMenu}>
+              <FaUser /> Sobre mim
+            </Link>
           </li>
           <li className="nav-item">
-            <a href="/about" className="nav-links">
-              Sobre
-            </a>
+            <Link to="/projects" className="nav-links" onClick={closeMenu}>
+              <FaProjectDiagram /> Projetos
+            </Link>
           </li>
           <li className="nav-item">
-            <a href="/contact" className="nav-links">
-              Contato
-            </a>
+            <Link to="/contact" className="nav-links" onClick={closeMenu}>
+              <FaEnvelope /> Contato
+            </Link>
           </li>
         </ul>
       </div>

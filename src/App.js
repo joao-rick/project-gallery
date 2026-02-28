@@ -32,32 +32,40 @@ function App() {
           </div>
         )}
         <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <AboutMePage />
-            }
-          />
-          <Route
-            path="/projects"
-            element={
-              <>
-                <h1>Galeria de Projetos</h1>
-                <ProjectGallery />
-              </>
-            }
-          />
-          <Route path="/projects/ecommerce" element={<EcommerceDemo />} />
-          <Route path="/projects/weather" element={<WeatherDemo />} />
-          <Route path="/projects/tasks" element={<TaskManagerDemo />} />
-          <Route path="/projects/portfolio" element={<PortfolioDemo />} />
-          <Route path="/projects/blog" element={<BlogDemo />} />
-          <Route path="/projects/recipes" element={<RecipeFinderDemo />} />
-          <Route path="/about" element={<AboutMePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <main className="app-main">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <AboutMePage />
+              }
+            />
+            <Route
+              path="/projects"
+              element={
+                <>
+                  <section className="projects-hero">
+                    <h1>Galeria de Projetos</h1>
+                    <p>
+                      Coleção de demos funcionais com foco em experiência do usuário,
+                      arquitetura front-end e integrações modernas.
+                    </p>
+                  </section>
+                  <ProjectGallery />
+                </>
+              }
+            />
+            <Route path="/projects/ecommerce" element={<EcommerceDemo />} />
+            <Route path="/projects/weather" element={<WeatherDemo />} />
+            <Route path="/projects/tasks" element={<TaskManagerDemo />} />
+            <Route path="/projects/portfolio" element={<PortfolioDemo />} />
+            <Route path="/projects/blog" element={<BlogDemo />} />
+            <Route path="/projects/recipes" element={<RecipeFinderDemo />} />
+            <Route path="/about" element={<AboutMePage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
         <Footer />
       </div>
     </BrowserRouter>

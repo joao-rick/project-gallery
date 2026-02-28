@@ -10,7 +10,7 @@ const ProjectCard = ({ project }) => {
       <img src={project.image} alt={project.title} />
       <h3>{project.title}</h3>
       <p>{project.description}</p>
-      <div id='button-view'>
+      <div className="project-card-action">
         {isInternal ? (
           <Link to={project.link}>
             Ver Projeto <FaArrowRight />

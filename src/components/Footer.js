@@ -1,14 +1,17 @@
 import React from 'react';
 import { FaGithub, FaHeart, FaLinkedin, FaRocket } from 'react-icons/fa';
+import { useI18n } from '../i18n';
 
 const Footer = () => {
+  const { t } = useI18n();
+
   return (
     <footer className="site-footer">
       <div className="footer-section footer-left">
-        <FaRocket /> Portfólio pessoal
+        <FaRocket /> {t('footer.portfolio')}
       </div>
       <div className="footer-section footer-center">
-        <FaHeart /> Obrigado por visitar
+        <FaHeart /> {t('footer.thanks')}
       </div>
       <div className="footer-section footer-right footer-links">
         <a href="https://github.com/joao-rick" target="_blank" rel="noreferrer">

@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
+import { useI18n } from '../i18n';
 
 const BlogDemo = () => {
   const editorRef = useRef(null);
   const [title, setTitle] = useState('');
   const [posts, setPosts] = useState([]);
   const [shareStatus, setShareStatus] = useState('');
+  const { t } = useI18n();
 
   const handlePublish = () => {
     const content = editorRef.current?.innerHTML || '';
@@ -32,26 +34,24 @@ const BlogDemo = () => {
     }
     setPosts((prev) =>
       prev.map((post) =>
-        post.id === postId
-          ? { ...post, comments: [...post.comments, trimmed] }
-          : post
+        post.id === postId ? { ...post, comments: [...post.comments, trimmed] } : post
       )
     );
   };
 
   const sharePost = async (post) => {
     setShareStatus('');
-    const shareText = `${post.title} - Confira este post no blog`;
+    const shareText = `${post.title} - ${t('demos.share')}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: post.title, text: shareText });
-        setShareStatus('Post compartilhado com sucesso.');
+        setShareStatus(t('demos.shareSuccess'));
         return;
       }
       await navigator.clipboard.writeText(shareText);
-      setShareStatus('Link copiado para a área de transferência.');
+      setShareStatus(t('demos.shareCopied'));
     } catch (err) {
-      setShareStatus('Não foi possível compartilhar agora.');
+      setShareStatus(t('demos.shareFail'));
     }
   };
 
@@ -59,17 +59,17 @@ const BlogDemo = () => {
     <div className="demo-page">
       <header className="demo-header">
         <div>
-          <h2>Blog Studio</h2>
-          <p>Editor rich text, comentários e compartilhamento.</p>
+          <h2>{t('demos.blogTitle')}</h2>
+          <p>{t('demos.blogSubtitle')}</p>
         </div>
       </header>
 
       <section className="demo-panel">
-        <h3>Novo post</h3>
+        <h3>{t('demos.newPost')}</h3>
         <div className="demo-form">
           <input
             type="text"
-            placeholder="Título do post"
+            placeholder={t('demos.postTitle')}
             value={title}
             onChange={(event) => setTitle(event.target.value)}
           />
@@ -78,10 +78,10 @@ const BlogDemo = () => {
             className="demo-editor"
             contentEditable
             suppressContentEditableWarning
-            placeholder="Escreva seu post aqui..."
+            data-placeholder={t('demos.writePost')}
           />
           <button type="button" onClick={handlePublish}>
-            Publicar
+            {t('demos.publish')}
           </button>
         </div>
       </section>
@@ -89,28 +89,25 @@ const BlogDemo = () => {
       {shareStatus && <p className="demo-status">{shareStatus}</p>}
 
       <section className="demo-panel">
-        <h3>Publicações</h3>
+        <h3>{t('demos.posts')}</h3>
         {posts.length === 0 ? (
-          <p>Nenhum post publicado.</p>
+          <p>{t('demos.noPosts')}</p>
         ) : (
           <div className="demo-list">
             {posts.map((post) => (
               <article key={post.id} className="demo-post">
                 <h4>{post.title}</h4>
-                <div
-                  className="demo-post-content"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
-                />
+                <div className="demo-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
                 <div className="demo-actions">
                   <button type="button" onClick={() => sharePost(post)}>
-                    Compartilhar
+                    {t('demos.share')}
                   </button>
                 </div>
                 <div className="demo-comments">
-                  <h5>Comentários</h5>
+                  <h5>{t('demos.comments')}</h5>
                   <CommentBox onSubmit={(text) => addComment(post.id, text)} />
                   {post.comments.length === 0 ? (
-                    <p>Nenhum comentário ainda.</p>
+                    <p>{t('demos.noComments')}</p>
                   ) : (
                     post.comments.map((comment, index) => (
                       <div key={`${post.id}-${index}`} className="demo-comment">
@@ -130,12 +127,13 @@ const BlogDemo = () => {
 
 const CommentBox = ({ onSubmit }) => {
   const [value, setValue] = useState('');
+  const { t } = useI18n();
 
   return (
     <div className="demo-form-row">
       <input
         type="text"
-        placeholder="Escreva um comentário"
+        placeholder={t('demos.writeComment')}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
@@ -146,7 +144,7 @@ const CommentBox = ({ onSubmit }) => {
           setValue('');
         }}
       >
-        Enviar
+        {t('demos.send')}
       </button>
     </div>
   );

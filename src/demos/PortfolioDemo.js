@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
+import { useI18n } from '../i18n';
 
 const skillSets = [
-  { id: 'frontend', label: 'Frontend' },
-  { id: 'backend', label: 'Backend' },
-  { id: 'design', label: 'Design' },
-  { id: 'data', label: 'Dados' },
+  { id: 'frontend', labelPt: 'Frontend', labelEn: 'Frontend' },
+  { id: 'backend', labelPt: 'Backend', labelEn: 'Backend' },
+  { id: 'design', labelPt: 'Design', labelEn: 'Design' },
+  { id: 'data', labelPt: 'Dados', labelEn: 'Data' },
 ];
 
 const portfolioProjects = [
@@ -12,30 +13,35 @@ const portfolioProjects = [
     id: 1,
     title: 'Atlas Finance',
     tag: 'frontend',
-    description: 'Dashboard responsivo com gráficos em tempo real.',
+    descriptionPt: 'Dashboard responsivo com graficos em tempo real.',
+    descriptionEn: 'Responsive dashboard with real-time charts.',
   },
   {
     id: 2,
     title: 'Roteiro Verde',
     tag: 'design',
-    description: 'Identidade visual e landing page para ONG.',
+    descriptionPt: 'Identidade visual e landing page para ONG.',
+    descriptionEn: 'Visual identity and landing page for NGO.',
   },
   {
     id: 3,
     title: 'Fluxo Log',
     tag: 'backend',
-    description: 'API de rastreamento com filas e cache distribuído.',
+    descriptionPt: 'API de rastreamento com filas e cache distribuido.',
+    descriptionEn: 'Tracking API with queues and distributed cache.',
   },
   {
     id: 4,
     title: 'Insight Lab',
     tag: 'data',
-    description: 'Pipeline de dados para relatórios semanais.',
+    descriptionPt: 'Pipeline de dados para relatorios semanais.',
+    descriptionEn: 'Data pipeline for weekly reports.',
   },
 ];
 
 const PortfolioDemo = () => {
   const [activeSkill, setActiveSkill] = useState('frontend');
+  const { locale, t } = useI18n();
 
   const visibleProjects = useMemo(() => {
     return portfolioProjects.filter((project) => project.tag === activeSkill);
@@ -45,20 +51,17 @@ const PortfolioDemo = () => {
     <div className="demo-page">
       <header className="demo-header">
         <div>
-          <h2>Portfólio</h2>
-          <p>Projetos, habilidades e propostas de valor.</p>
+          <h2>{t('demos.portfolioTitle')}</h2>
+          <p>{t('demos.portfolioSubtitle')}</p>
         </div>
         <button type="button" className="demo-primary">
-          Baixar CV
+          {t('demos.downloadCv')}
         </button>
       </header>
 
       <section className="demo-hero">
-        <h3>Olá, sou Alex Ribeiro</h3>
-        <p>
-          Desenvolvedor full-stack com foco em experiências digitais rápidas,
-          acessíveis e com design consistente.
-        </p>
+        <h3>{t('demos.portfolioHeroTitle')}</h3>
+        <p>{t('demos.portfolioHeroText')}</p>
       </section>
 
       <section className="demo-tabs">
@@ -69,7 +72,7 @@ const PortfolioDemo = () => {
             className={activeSkill === skill.id ? 'active' : ''}
             onClick={() => setActiveSkill(skill.id)}
           >
-            {skill.label}
+            {locale === 'en' ? skill.labelEn : skill.labelPt}
           </button>
         ))}
       </section>
@@ -78,26 +81,26 @@ const PortfolioDemo = () => {
         {visibleProjects.map((project) => (
           <article key={project.id} className="demo-card">
             <h3>{project.title}</h3>
-            <p>{project.description}</p>
-            <button type="button">Ver case</button>
+            <p>{locale === 'en' ? project.descriptionEn : project.descriptionPt}</p>
+            <button type="button">{t('demos.viewCase')}</button>
           </article>
         ))}
       </section>
 
       <section className="demo-panel">
-        <h3>Serviços</h3>
+        <h3>{t('demos.services')}</h3>
         <div className="demo-list">
           <div className="demo-list-row">
-            <span>Landing pages rápidas</span>
-            <strong>Entrega em 7 dias</strong>
+            <span>{t('demos.service1')}</span>
+            <strong>{t('demos.service1Meta')}</strong>
           </div>
           <div className="demo-list-row">
-            <span>Design system consistente</span>
-            <strong>Componentes reutilizáveis</strong>
+            <span>{t('demos.service2')}</span>
+            <strong>{t('demos.service2Meta')}</strong>
           </div>
           <div className="demo-list-row">
-            <span>Suporte pós-lançamento</span>
-            <strong>Monitoramento contínuo</strong>
+            <span>{t('demos.service3')}</span>
+            <strong>{t('demos.service3Meta')}</strong>
           </div>
         </div>
       </section>

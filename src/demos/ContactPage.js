@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { useI18n } from '../i18n';
 
 const ContactPage = () => {
   const [copyStatus, setCopyStatus] = useState('');
+  const { t } = useI18n();
 
   const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText('mmrrricardo@gmail.com');
-      setCopyStatus('Email copiado!');
+      setCopyStatus(t('contact.copied'));
       setTimeout(() => setCopyStatus(''), 2000);
     } catch (err) {
-      setCopyStatus('Não foi possível copiar.');
+      setCopyStatus(t('contact.copyFailed'));
       setTimeout(() => setCopyStatus(''), 2000);
     }
   };
@@ -20,8 +22,8 @@ const ContactPage = () => {
     <div className="demo-page contact-page">
       <header className="demo-header">
         <div>
-          <h2>Contato</h2>
-          <p>Vamos conversar sobre seu próximo projeto.</p>
+          <h2>{t('contact.title')}</h2>
+          <p>{t('contact.subtitle')}</p>
         </div>
       </header>
       <section className="demo-panel">
@@ -31,12 +33,12 @@ const ContactPage = () => {
               <FaEnvelope />
             </div>
             <div>
-              <h4>Email</h4>
+              <h4>{t('contact.email')}</h4>
               <a
                 className="contact-link contact-action"
                 href="mailto:contato@exemplo.com"
                 data-tooltip-id="email-tip"
-                data-tooltip-content="Clique para copiar o email"
+                data-tooltip-content={t('contact.copyHint')}
                 onClick={(event) => {
                   event.preventDefault();
                   handleCopyEmail();
@@ -53,7 +55,7 @@ const ContactPage = () => {
               <FaLinkedin />
             </div>
             <div>
-              <h4>LinkedIn</h4>
+              <h4>{t('contact.linkedin')}</h4>
               <a
                 className="contact-link"
                 href="https://www.linkedin.com/in/joao-ric/"
@@ -69,7 +71,7 @@ const ContactPage = () => {
               <FaGithub />
             </div>
             <div>
-              <h4>GitHub</h4>
+              <h4>{t('contact.github')}</h4>
               <a
                 className="contact-link"
                 href="https://github.com/joao-rick"
@@ -84,14 +86,13 @@ const ContactPage = () => {
       </section>
       <section className="contact-footer">
         <p>
-          Busco oportunidades como desenvolvedor contratado.{' '}
-          <strong>Disponível para processos seletivos.</strong>
+          {t('contact.hiringLead')} <strong>{t('contact.hiringStrong')}</strong>
         </p>
       </section>
       <section className="contact-cta">
-        <div className="contact-chip">CLT ou PJ</div>
-        <div className="contact-chip">Remoto ou híbrido</div>
-        <div className="contact-chip">Início imediato</div>
+        <div className="contact-chip">{t('contact.chip1')}</div>
+        <div className="contact-chip">{t('contact.chip2')}</div>
+        <div className="contact-chip">{t('contact.chip3')}</div>
       </section>
     </div>
   );

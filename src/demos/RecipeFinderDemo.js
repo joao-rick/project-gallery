@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useI18n } from '../i18n';
 
 const RecipeFinderDemo = () => {
   const [ingredient, setIngredient] = useState('');
@@ -8,10 +9,11 @@ const RecipeFinderDemo = () => {
   const [error, setError] = useState('');
   const [translatedNames, setTranslatedNames] = useState({});
   const [translatedSelected, setTranslatedSelected] = useState(null);
+  const { locale, t } = useI18n();
 
   const translateText = async (text, from, to) => {
-    if (!text) {
-      return '';
+    if (!text || from === to) {
+      return text || '';
     }
     try {
       const response = await fetch('https://translate.argosopentech.com/translate', {
@@ -34,7 +36,7 @@ const RecipeFinderDemo = () => {
   const searchRecipes = async () => {
     const query = ingredient.trim();
     if (!query) {
-      setError('Digite um ingrediente.');
+      setError(t('demos.ingredientMissing'));
       return;
     }
     setStatus('loading');
@@ -43,8 +45,10 @@ const RecipeFinderDemo = () => {
     setSelected(null);
     setTranslatedSelected(null);
     setTranslatedNames({});
+
     try {
-      const translatedIngredient = await translateText(query, 'pt', 'en');
+      const sourceLang = locale === 'en' ? 'en' : 'pt';
+      const translatedIngredient = await translateText(query, sourceLang, 'en');
       const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(
           translatedIngredient
@@ -55,36 +59,37 @@ const RecipeFinderDemo = () => {
       setStatus('success');
     } catch (err) {
       setStatus('idle');
-      setError('Não foi possível buscar receitas.');
+      setError(t('demos.recipeSearchError'));
     }
   };
 
   useEffect(() => {
     let cancelled = false;
+
     const translateMeals = async () => {
-      if (!meals.length) {
+      if (!meals.length || locale === 'en') {
         return;
       }
-      const updates = {};
       for (const meal of meals) {
         const translated = await translateText(meal.strMeal, 'en', 'pt');
-        updates[meal.idMeal] = translated;
         if (cancelled) {
           return;
         }
         setTranslatedNames((prev) => ({ ...prev, [meal.idMeal]: translated }));
       }
     };
+
     translateMeals();
     return () => {
       cancelled = true;
     };
-  }, [meals]);
+  }, [meals, locale]);
 
   const selectMeal = async (meal) => {
     setSelected(null);
     setTranslatedSelected(null);
     setStatus('loading');
+
     try {
       const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`
@@ -92,7 +97,8 @@ const RecipeFinderDemo = () => {
       const data = await response.json();
       const fullMeal = data.meals ? data.meals[0] : null;
       setSelected(fullMeal);
-      if (fullMeal) {
+
+      if (fullMeal && locale === 'pt') {
         const [namePt, categoryPt, areaPt, instructionsPt] = await Promise.all([
           translateText(fullMeal.strMeal, 'en', 'pt'),
           translateText(fullMeal.strCategory, 'en', 'pt'),
@@ -107,10 +113,11 @@ const RecipeFinderDemo = () => {
           strInstructions: instructionsPt,
         });
       }
+
       setStatus('success');
     } catch (err) {
       setStatus('idle');
-      setError('Não foi possível carregar a receita.');
+      setError(t('demos.recipeLoadError'));
     }
   };
 
@@ -118,24 +125,24 @@ const RecipeFinderDemo = () => {
     <div className="demo-page">
       <header className="demo-header">
         <div>
-          <h2>Busca de Receitas</h2>
-          <p>Pesquise receitas por ingrediente.</p>
+          <h2>{t('demos.recipesTitle')}</h2>
+          <p>{t('demos.recipesSubtitle')}</p>
         </div>
       </header>
 
       <section className="demo-controls">
         <input
           type="text"
-          placeholder="Ex: frango, tomate, queijo"
+          placeholder={t('demos.ingredientPlaceholder')}
           value={ingredient}
           onChange={(event) => setIngredient(event.target.value)}
         />
         <button type="button" onClick={searchRecipes}>
-          Buscar
+          {t('demos.search')}
         </button>
       </section>
 
-      {status === 'loading' && <p>Carregando...</p>}
+      {status === 'loading' && <p>{t('demos.loading')}</p>}
       {error && <p className="demo-status">{error}</p>}
 
       <section className="demo-grid">
@@ -144,7 +151,7 @@ const RecipeFinderDemo = () => {
             <h3>{translatedNames[meal.idMeal] || meal.strMeal}</h3>
             <img src={meal.strMealThumb} alt={meal.strMeal} />
             <button type="button" onClick={() => selectMeal(meal)}>
-              Ver receita
+              {t('demos.viewRecipe')}
             </button>
           </article>
         ))}
@@ -152,26 +159,19 @@ const RecipeFinderDemo = () => {
 
       {selected && (
         <section className="demo-panel">
-          <h3>
-            {(translatedSelected && translatedSelected.strMeal) ||
-              selected.strMeal}
-          </h3>
+          <h3>{(translatedSelected && translatedSelected.strMeal) || selected.strMeal}</h3>
           <p>
-            {(translatedSelected && translatedSelected.strArea) ||
-              selected.strArea}{' '}
-            ·{' '}
-            {(translatedSelected && translatedSelected.strCategory) ||
-              selected.strCategory}
+            {(translatedSelected && translatedSelected.strArea) || selected.strArea} -{' '}
+            {(translatedSelected && translatedSelected.strCategory) || selected.strCategory}
           </p>
           <div className="demo-list">
             <div className="demo-list-row">
-              <span>Modo de preparo</span>
-              <strong>Detalhes abaixo</strong>
+              <span>{t('demos.preparation')}</span>
+              <strong>{t('demos.detailsBelow')}</strong>
             </div>
           </div>
           <p className="demo-recipe">
-            {(translatedSelected && translatedSelected.strInstructions) ||
-              selected.strInstructions}
+            {(translatedSelected && translatedSelected.strInstructions) || selected.strInstructions}
           </p>
         </section>
       )}

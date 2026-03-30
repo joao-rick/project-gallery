@@ -7,110 +7,96 @@ import {
   FaPaintBrush,
 } from 'react-icons/fa';
 import profileImage from '../img/perfil.jpg';
+import { useI18n } from '../i18n';
 
 const AboutMePage = () => {
+  const { t } = useI18n();
+
   return (
     <div className="demo-page about-page">
       <header className="demo-header about-header">
         <div>
-          <h2>Sobre mim</h2>
-          {/* <p>Desenvolvedor Full-Stack</p> */}
+          <h2>{t('about.title')}</h2>
         </div>
       </header>
 
       <section className="about-hero">
         <div className="about-badge">
           <span className="about-pill">
-            <FaBolt /> Disponível para contato
+            <FaBolt /> {t('about.available')}
           </span>
-          <h3>Olá, eu sou João Ricardo</h3>
-          <p>
-            Sou um desenvolvedor Full-Stack e entusiasta de programação e tecnologia, sempre em busca de evoluir e aprender. Gosto de criar projetos práticos, organizados e com foco em resultados.
-          </p>
+          <h3>{t('about.hello')}</h3>
+          <p>{t('about.summary')}</p>
           <div className="about-tags">
             <span>
-              <FaLayerGroup /> Produto
+              <FaLayerGroup /> {t('about.tagProduct')}
             </span>
             <span>
-              <FaCode /> Front-end
+              <FaCode /> {t('about.tagFrontend')}
             </span>
             <span>
-              <FaDatabase /> Back-end
+              <FaDatabase /> {t('about.tagBackend')}
             </span>
           </div>
         </div>
         <div className="about-photo">
-          <img src={profileImage} alt="Pessoa desenvolvedora" />
+          <img src={profileImage} alt="Developer profile" />
         </div>
       </section>
 
       <section className="about-highlight">
         <div>
-          <h4>O que me move</h4>
-          <p>
-            Entregar produtos que unem clareza, fluidez e crescimento de
-            negócio, com um cuidado especial em cada detalhe da interface.
-          </p>
+          <h4>{t('about.driveTitle')}</h4>
+          <p>{t('about.driveText')}</p>
         </div>
         <div>
-          <h4>Como eu trabalho</h4>
-          <p>
-            Processos ágeis, validação contínua com usuários e código limpo
-            orientado a resultados.
-          </p>
+          <h4>{t('about.workTitle')}</h4>
+          <p>{t('about.workText')}</p>
         </div>
       </section>
 
       <section className="demo-panel">
-        <h3>Hard skills</h3>
+        <h3>{t('about.hardSkills')}</h3>
         <div className="demo-list">
           <div className="demo-list-row">
             <span>
-              <FaCode /> Linguagens de Programação
+              <FaCode /> {t('about.languages')}
             </span>
-            <strong>
-              TypeScript, JavaScript, Python, C#, Java.
-            </strong>
+            <strong>TypeScript, JavaScript, Python, C#, Java.</strong>
           </div>
           <div className="demo-list-row">
             <span>
-              <FaDatabase /> Back-end
+              <FaDatabase /> {t('about.backend')}
             </span>
-            <strong>
-              Node.js (Express.js, NestJS), Django, Spring.
-            </strong>
+            <strong>Node.js (Express.js, NestJS), Django, Spring.</strong>
           </div>
           <div className="demo-list-row">
             <span>
-              <FaPaintBrush /> Front-end
+              <FaPaintBrush /> {t('about.frontend')}
             </span>
-            <strong>
-              React, Tailwind CSS, Next.js.
-            </strong>
+            <strong>React, Tailwind CSS, Next.js.</strong>
           </div>
           <div className="demo-list-row">
             <span>
-              <FaLayerGroup /> APIs & Microsserviços
+              <FaLayerGroup /> {t('about.apis')}
             </span>
-            <strong>APIs RESTful, GraphQL.</strong>
+            <strong>REST APIs, GraphQL.</strong>
           </div>
           <div className="demo-list-row">
             <span>
-              <FaDatabase /> Banco de Dados
+              <FaDatabase /> {t('about.database')}
             </span>
-            <strong>
-              PostgreSQL, MySQL, SQL Server, Redis, MongoDB.
-            </strong>
+            <strong>PostgreSQL, MySQL, SQL Server, Redis, MongoDB.</strong>
           </div>
           <div className="demo-list-row">
             <span>
-              <FaBolt /> Containerização
+              <FaBolt /> {t('about.containers')}
             </span>
             <strong>Docker, Kubernetes.</strong>
           </div>
           <div className="demo-list-row">
             <span>
-              <FaLayerGroup /> Controle de Versão
+              <FaLayerGroup /> {t('about.vcs')}
             </span>
             <strong>Git, GitHub, GitLab.</strong>
           </div>

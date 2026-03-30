@@ -1,16 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useI18n } from '../i18n';
 
 const NotFound = () => {
+  const { t } = useI18n();
+
   return (
     <div className="demo-page">
       <header className="demo-header">
         <div>
-          <h2>Página não encontrada</h2>
-          <p>O endereço digitado não existe.</p>
+          <h2>{t('notFound.title')}</h2>
+          <p>{t('notFound.subtitle')}</p>
         </div>
         <Link className="demo-primary" to="/">
-          Voltar para a galeria
+          {t('notFound.cta')}
         </Link>
       </header>
     </div>

@@ -13,9 +13,11 @@ import RecipeFinderDemo from './demos/RecipeFinderDemo';
 import AboutMePage from './demos/AboutMePage';
 import ContactPage from './demos/ContactPage';
 import NotFound from './demos/NotFound';
+import { useI18n } from './i18n';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const { t } = useI18n();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 900);
@@ -28,28 +30,20 @@ function App() {
         {loading && (
           <div className="loading-screen">
             <div className="loading-orb" />
-            <p>Carregando experiências...</p>
+            <p>{t('app.loading')}</p>
           </div>
         )}
         <Navbar />
         <main className="app-main">
           <Routes>
-            <Route
-              path="/"
-              element={
-                <AboutMePage />
-              }
-            />
+            <Route path="/" element={<AboutMePage />} />
             <Route
               path="/projects"
               element={
                 <>
                   <section className="projects-hero">
-                    <h1>Galeria de Projetos</h1>
-                    <p>
-                      Coleção de demos funcionais com foco em experiência do usuário,
-                      arquitetura front-end e integrações modernas.
-                    </p>
+                    <h1>{t('app.projectsTitle')}</h1>
+                    <p>{t('app.projectsIntro')}</p>
                   </section>
                   <ProjectGallery />
                 </>

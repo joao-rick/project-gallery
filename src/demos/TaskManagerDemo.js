@@ -1,16 +1,17 @@
 import React, { useMemo, useState } from 'react';
+import { useI18n } from '../i18n';
 
 const initialTasks = [
   {
     id: 1,
-    title: 'Revisar roadmap',
-    dueDate: '2026-02-05',
+    title: 'Review roadmap',
+    dueDate: '2026-04-05',
     completed: false,
   },
   {
     id: 2,
-    title: 'Enviar proposta ao cliente',
-    dueDate: '2026-02-06',
+    title: 'Send proposal to client',
+    dueDate: '2026-04-06',
     completed: true,
   },
 ];
@@ -22,6 +23,7 @@ const TaskManagerDemo = () => {
   const [filter, setFilter] = useState('all');
   const [editingId, setEditingId] = useState(null);
   const [editingValue, setEditingValue] = useState('');
+  const { t } = useI18n();
 
   const visibleTasks = useMemo(() => {
     if (filter === 'done') {
@@ -74,9 +76,7 @@ const TaskManagerDemo = () => {
       return;
     }
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, title: trimmed } : task
-      )
+      prev.map((task) => (task.id === id ? { ...task, title: trimmed } : task))
     );
     setEditingId(null);
     setEditingValue('');
@@ -86,15 +86,15 @@ const TaskManagerDemo = () => {
     <div className="demo-page">
       <header className="demo-header">
         <div>
-          <h2>Organizador de Tarefas</h2>
-          <p>Crie, edite e acompanhe suas tarefas diárias.</p>
+          <h2>{t('demos.tasksTitle')}</h2>
+          <p>{t('demos.tasksSubtitle')}</p>
         </div>
       </header>
 
       <section className="demo-form">
         <input
           type="text"
-          placeholder="Nova tarefa"
+          placeholder={t('demos.newTask')}
           value={title}
           onChange={(event) => setTitle(event.target.value)}
         />
@@ -104,7 +104,7 @@ const TaskManagerDemo = () => {
           onChange={(event) => setDueDate(event.target.value)}
         />
         <button type="button" onClick={addTask}>
-          Adicionar
+          {t('demos.addTask')}
         </button>
       </section>
 
@@ -114,27 +114,27 @@ const TaskManagerDemo = () => {
           className={filter === 'all' ? 'active' : ''}
           onClick={() => setFilter('all')}
         >
-          Todas
+          {t('demos.all')}
         </button>
         <button
           type="button"
           className={filter === 'open' ? 'active' : ''}
           onClick={() => setFilter('open')}
         >
-          Pendentes
+          {t('demos.open')}
         </button>
         <button
           type="button"
           className={filter === 'done' ? 'active' : ''}
           onClick={() => setFilter('done')}
         >
-          Concluídas
+          {t('demos.done')}
         </button>
       </section>
 
       <section className="demo-panel">
         {visibleTasks.length === 0 ? (
-          <p>Nenhuma tarefa encontrada.</p>
+          <p>{t('demos.noTasks')}</p>
         ) : (
           <div className="demo-list">
             {visibleTasks.map((task) => (
@@ -147,29 +147,29 @@ const TaskManagerDemo = () => {
                       onChange={(event) => setEditingValue(event.target.value)}
                     />
                   ) : (
-                    <strong
-                      className={task.completed ? 'demo-done' : undefined}
-                    >
+                    <strong className={task.completed ? 'demo-done' : undefined}>
                       {task.title}
                     </strong>
                   )}
-                  <span>Vence em {task.dueDate}</span>
+                  <span>
+                    {t('demos.dueDate')} {task.dueDate}
+                  </span>
                 </div>
                 <div className="demo-actions">
                   <button type="button" onClick={() => toggleTask(task.id)}>
-                    {task.completed ? 'Reabrir' : 'Concluir'}
+                    {task.completed ? t('demos.reopen') : t('demos.complete')}
                   </button>
                   {editingId === task.id ? (
                     <button type="button" onClick={() => saveEdit(task.id)}>
-                      Salvar
+                      {t('demos.save')}
                     </button>
                   ) : (
                     <button type="button" onClick={() => startEdit(task)}>
-                      Editar
+                      {t('demos.edit')}
                     </button>
                   )}
                   <button type="button" onClick={() => deleteTask(task.id)}>
-                    Excluir
+                    {t('demos.remove')}
                   </button>
                 </div>
               </div>
